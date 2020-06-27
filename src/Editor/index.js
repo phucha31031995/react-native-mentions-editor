@@ -26,7 +26,8 @@ export class Editor extends React.Component {
     onHideMentions: PropTypes.func,
     editorStyles: PropTypes.object,
     placeholder: PropTypes.string,
-    renderMentionList: PropTypes.func
+    renderMentionList: PropTypes.func,
+    onBackSpace: PropTypes.func
   };
 
   constructor(props) {
@@ -497,6 +498,12 @@ export class Editor extends React.Component {
       });
     }
   };
+  checkKeyPress = ({ nativeEvent }) => {
+    const { onBackSpace } = this.props
+    if (nativeEvent.key === 'Backspace') {
+      onBackSpace && onBackSpace()
+    }
+  }
 
   render() {
     const { props, state } = this;
@@ -575,6 +582,7 @@ export class Editor extends React.Component {
                 placeholder={state.placeholder}
                 onContentSizeChange={this.onContentSizeChange}
                 scrollEnabled={false}
+                onKeyPress={this.checkKeyPress}
               />
             </View>
           </ScrollView>
