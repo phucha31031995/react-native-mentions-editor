@@ -7,7 +7,7 @@ import {
   Text,
   Animated,
   Platform,
-  ScrollView
+  ScrollView,
 } from "react-native";
 
 import EU from "./EditorUtils";
@@ -27,7 +27,7 @@ export class Editor extends React.Component {
     editorStyles: PropTypes.object,
     placeholder: PropTypes.string,
     renderMentionList: PropTypes.func,
-    onBackSpace: PropTypes.func
+    onBackSpace: PropTypes.func,
   };
 
   constructor(props) {
@@ -40,7 +40,7 @@ export class Editor extends React.Component {
       this.mentionsMap = map;
       msg = newValue;
       formattedMsg = this.formatText(newValue);
-      setTimeout(()=>{
+      setTimeout(() => {
         this.sendMessageToFooter(newValue);
       });
     }
@@ -56,13 +56,13 @@ export class Editor extends React.Component {
       trigger: "@",
       selection: {
         start: 0,
-        end: 0
+        end: 0,
       },
       menIndex: 0,
       showMentions: false,
       editorHeight: props.editorHeight ? props.editorHeight : 0,
       scrollContentInset: { top: 0, bottom: 0, left: 0, right: 0 },
-      placeholder: props.placeholder || "Type something..."
+      placeholder: props.placeholder || "Type something...",
     };
     this.isTrackingStarted = false;
     this.previousChar = " ";
@@ -76,13 +76,13 @@ export class Editor extends React.Component {
       const newInputText = `${prevState.inputText}${prevState.trigger}`;
       return {
         inputText: newInputText,
-        showMentions: nextProps.showMentions
+        showMentions: nextProps.showMentions,
       };
     }
 
     if (!nextProps.showMentions) {
       return {
-        showMentions: nextProps.showMentions
+        showMentions: nextProps.showMentions,
       };
     }
     return null;
@@ -93,7 +93,7 @@ export class Editor extends React.Component {
     if (this.state.inputText !== "" && this.state.clearInput) {
       this.setState({
         inputText: "",
-        formattedText: ""
+        formattedText: "",
       });
       this.mentionsMap.clear();
     }
@@ -119,7 +119,7 @@ export class Editor extends React.Component {
     this.setState({
       keyword: "",
       menIndex,
-      isTrackingStarted: true
+      isTrackingStarted: true,
     });
   }
 
@@ -127,14 +127,14 @@ export class Editor extends React.Component {
     this.isTrackingStarted = false;
     // this.closeSuggestionsPanel();
     this.setState({
-      isTrackingStarted: false
+      isTrackingStarted: false,
     });
     this.props.onHideMentions();
   }
 
   updateSuggestions(lastKeyword) {
     this.setState({
-      keyword: lastKeyword
+      keyword: lastKeyword,
     });
   }
 
@@ -226,22 +226,22 @@ export class Editor extends React.Component {
      */
     const adjMentIndexes = {
       start: initialStr.length - 1,
-      end: inputText.length - remStr.length - 1
+      end: inputText.length - remStr.length - 1,
     };
     const mentionKeys = EU.getSelectedMentionKeys(
       this.mentionsMap,
       adjMentIndexes
     );
-    mentionKeys.forEach(key => {
+    mentionKeys.forEach((key) => {
       remStr = `@${this.mentionsMap.get(key).username} ${remStr}`;
     });
     return {
       initialStr,
-      remStr
+      remStr,
     };
   }
 
-  onSuggestionTap = user => {
+  onSuggestionTap = (user) => {
     /**
      * When user select a mention.
      * Add a mention in the string.
@@ -268,7 +268,7 @@ export class Editor extends React.Component {
     this.updateMentionsMap(
       {
         start: menEndIndex + 1,
-        end: text.length
+        end: text.length,
       },
       charAdded,
       true
@@ -276,7 +276,7 @@ export class Editor extends React.Component {
 
     this.setState({
       inputText: text,
-      formattedText: this.formatText(text)
+      formattedText: this.formatText(text),
     });
     this.stopTracking();
     this.sendMessageToFooter(text);
@@ -364,7 +364,7 @@ export class Editor extends React.Component {
   sendMessageToFooter(text) {
     this.props.onChange({
       displayText: text,
-      text: this.formatTextWithMentions(text)
+      text: this.formatTextWithMentions(text),
     });
   }
 
@@ -388,7 +388,7 @@ export class Editor extends React.Component {
       let charDeleted = Math.abs(text.length - prevText.length);
       const totalSelection = {
         start: selection.start,
-        end: charDeleted > 1 ? selection.start + charDeleted : selection.start
+        end: charDeleted > 1 ? selection.start + charDeleted : selection.start,
       };
       /**
        * REmove all the selected mentions
@@ -421,7 +421,7 @@ export class Editor extends React.Component {
           this.mentionsMap,
           totalSelection
         );
-        mentionKeys.forEach(key => {
+        mentionKeys.forEach((key) => {
           this.mentionsMap.delete(key);
         });
       }
@@ -433,7 +433,7 @@ export class Editor extends React.Component {
       this.updateMentionsMap(
         {
           start: selection.end,
-          end: prevText.length
+          end: prevText.length,
         },
         charDeleted,
         false
@@ -445,7 +445,7 @@ export class Editor extends React.Component {
       this.updateMentionsMap(
         {
           start: selection.end,
-          end: text.length
+          end: text.length,
         },
         charAdded,
         true
@@ -467,7 +467,7 @@ export class Editor extends React.Component {
 
     this.setState({
       inputText: text,
-      formattedText: this.formatText(text)
+      formattedText: this.formatText(text),
       // selection,
     });
     this.checkForMention(text, selection);
@@ -476,7 +476,7 @@ export class Editor extends React.Component {
     this.sendMessageToFooter(text);
   };
 
-  onContentSizeChange = evt => {
+  onContentSizeChange = (evt) => {
     /**
      * this function will dynamically
      * calculate editor height w.r.t
@@ -494,20 +494,21 @@ export class Editor extends React.Component {
       let editorHeight = 20;
       editorHeight = editorHeight + height;
       this.setState({
-        editorHeight
+        editorHeight,
       });
     }
   };
   checkKeyPress = ({ nativeEvent }) => {
-    const { onBackSpace } = this.props
-    if (nativeEvent.key === 'Backspace') {
-      onBackSpace && onBackSpace()
+    const { onBackSpace } = this.props;
+    if (nativeEvent.key === "Backspace") {
+      onBackSpace && onBackSpace();
     }
-  }
+  };
 
   render() {
     const { props, state } = this;
     const { editorStyles = {} } = props;
+    const { autoFocus } = props;
 
     if (!props.showEditor) return null;
 
@@ -516,7 +517,7 @@ export class Editor extends React.Component {
       keyword: state.keyword,
       isTrackingStarted: state.isTrackingStarted,
       onSuggestionTap: this.onSuggestionTap.bind(this),
-      editorStyles
+      editorStyles,
     };
 
     return (
@@ -534,7 +535,7 @@ export class Editor extends React.Component {
         )}
         <View style={[styles.container, editorStyles.mainContainer]}>
           <ScrollView
-            ref={scroll => {
+            ref={(scroll) => {
               this.scroll = scroll;
             }}
             onContentSizeChange={() => {
@@ -546,7 +547,7 @@ export class Editor extends React.Component {
               <View
                 style={[
                   styles.formmatedTextWrapper,
-                  editorStyles.inputMaskTextWrapper
+                  editorStyles.inputMaskTextWrapper,
                 ]}
               >
                 {state.formattedText !== "" ? (
@@ -559,7 +560,7 @@ export class Editor extends React.Component {
                   <Text
                     style={[
                       styles.placeholderText,
-                      editorStyles.placeholderText
+                      editorStyles.placeholderText,
                     ]}
                   >
                     {state.placeholder}
@@ -567,10 +568,10 @@ export class Editor extends React.Component {
                 )}
               </View>
               <TextInput
-                ref={input => props.onRef && props.onRef(input)}
+                ref={(input) => props.onRef && props.onRef(input)}
                 style={[styles.input, editorStyles.input]}
                 multiline
-                autoFocus
+                autoFocus={autoFocus ? true : false}
                 numberOfLines={100}
                 name={"message"}
                 value={state.inputText}
