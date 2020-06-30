@@ -22,6 +22,7 @@ export class Editor extends React.Component {
     onChange: PropTypes.func,
     showEditor: PropTypes.bool,
     toggleEditor: PropTypes.func,
+    onFocus: PropTypes.func,
     showMentions: PropTypes.bool,
     onHideMentions: PropTypes.func,
     editorStyles: PropTypes.object,
@@ -576,6 +577,7 @@ export class Editor extends React.Component {
                 name={"message"}
                 value={state.inputText}
                 onBlur={props.toggleEditor}
+                onFocus={props.onFocus}
                 onChangeText={this.onChange}
                 selection={this.state.selection}
                 selectionColor={"#000"}
