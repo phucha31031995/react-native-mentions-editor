@@ -29,6 +29,7 @@ export class Editor extends React.Component {
     placeholder: PropTypes.string,
     renderMentionList: PropTypes.func,
     onBackSpace: PropTypes.func,
+    inputProps: PropTypes.any
   };
 
   constructor(props) {
@@ -586,6 +587,7 @@ export class Editor extends React.Component {
                 onContentSizeChange={this.onContentSizeChange}
                 scrollEnabled={false}
                 onKeyPress={this.checkKeyPress}
+                {...props.inputProps}
               />
             </View>
           </ScrollView>
