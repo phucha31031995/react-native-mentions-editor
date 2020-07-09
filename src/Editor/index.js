@@ -32,6 +32,10 @@ export class Editor extends React.Component {
     inputProps: PropTypes.any,
   };
 
+  static defaultProps = {
+    editorHeight: 0,
+  };
+
   constructor(props) {
     super(props);
     this.mentionsMap = new Map();
@@ -487,11 +491,12 @@ export class Editor extends React.Component {
      */
     if (evt) {
       const editorHeight = evt.nativeEvent.contentSize.height;
-      console.log('onContentSizeChange editorHeight', editorHeight);
-
-      this.setState({
-        editorHeight,
-      });
+      if (editorHeight > this.props.editorHeight) {
+        console.log('onContentSizeChange editorHeight', editorHeight);
+        this.setState({
+          editorHeight,
+        });
+      }
     }
   };
   checkKeyPress = ({ nativeEvent }) => {
